@@ -21,11 +21,16 @@ A simple React-based task manager to manage tasks effectively.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/task-manager.git
+   git clone [https://github.com/Vinaykumar5890/tak]
 
+## Website Url 
+
+ -WEBSITE URL 
+  ```bash
+  https://tak.ccbp.tech/
+- 
 > ### _Things to Keep in Mind_
 >
-> - All components you implement should go in the `src/components` directory.
+> - All components you implement should go in the `src` directory.
 > - Don't change the component folder names as those are the files being imported into the tests.
 > - **Do not remove the pre-filled code**
-> - Want to quickly review some of the concepts you’ve been learning? Take a look at the Cheat Sheets.
