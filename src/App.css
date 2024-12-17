@@ -1,121 +1,155 @@
+
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-
-
-
-body {
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f9f9f9;
+  background-color: #f4f7fc;
   color: #333;
 }
-.sortedList {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-  margin-bottom: 9px;
-}
-.app {
-  max-width: 900px;
-  margin: 20px auto;
+
+.app-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
-  background: white;
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   text-align: center;
-  color: #4caf50;
+  margin-bottom: 20px;
+  color: #007bff;
 }
 
-.task-form {
+.search-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search-container input {
+  padding: 10px;
+  width: 50%;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.form-container {
+  margin-bottom: 40px;
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #007bff;
+}
+
+.form-container form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  align-items: center;
 }
 
-.task-form input,
-.task-form textarea,
-.task-form select,
-.task-form button {
+.form-container input {
+  margin: 10px 0;
   padding: 10px;
-  border: 1px solid #ddd;
+  width: 70%;
+  font-size: 16px;
   border-radius: 4px;
+  border: 1px solid #ddd;
 }
 
-.task-form button {
-  background: #4caf50;
-  color: white;
+.form-container button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
   border: none;
+  border-radius: 4px;
+  font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.task-form button:hover {
-  background: #45a049;
+.form-container button:hover {
+  background-color: #0056b3;
 }
 
-.task-list {
-  display: flex;
-  flex-direction: row;
-  max-width: 1200px;
-  flex-wrap: wrap;
+.books-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
-}
-@media screen and (max-width: 576px) {
-  .task-card {
-    min-width: 250px;
-  }
+  margin-top: 20px;
 }
 
-.task-card {
-  background: #f1f1f1;
+.book-item {
+  background-color: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  flex: 1 1 calc(33.333% - 20px);
-  max-width: calc(33.333% - 20px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-.task-card h3 {
-  margin-top: 0;
-  color: #333;
+.book-item h3 {
+  color: #007bff;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
-.task-card p {
-  margin: 5px 0;
+.book-item p {
+  margin-bottom: 8px;
 }
 
-.task-card button {
-  margin-right: 10px;
-  padding: 5px 10px;
-  background: #4caf50;
-  color: white;
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.actions button {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #007bff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.task-card button:hover {
-  background: #45a049;
+.actions button:hover {
+  background-color: #0056b3;
 }
 
 @media (max-width: 768px) {
-  .task-card {
-    flex: 1 1 100%;
+  .books-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form-container input {
+    width: 80%;
+  }
+
+  .search-container input {
+    width: 80%;
   }
 }
+
+@media (max-width: 480px) {
+  .books-list {
+    grid-template-columns: 1fr;
+  }
+
+  .form-container input {
+    width: 90%;
+  }
+
+  .search-container input {
+    width: 90%;
+  }
+}
+
