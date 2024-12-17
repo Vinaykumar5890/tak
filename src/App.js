@@ -1,130 +1,195 @@
 import React, {useState, useEffect} from 'react'
+import axios from 'axios'
+import {Oval} from 'react-loader-spinner'
 import './App.css'
 
-const App = () => {
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem('tasks')
-    return savedTasks ? JSON.parse(savedTasks) : []
-  })
-  const [filter, setFilter] = useState('All')
-  const [editTask, setEditTask] = useState(null)
-  const [formValues, setFormValues] = useState({
+function App() {
+  const [books, setBooks] = useState([])
+  const [newBook, setNewBook] = useState({
     title: '',
-    description: '',
-    dueDate: '',
-    status: 'Pending',
+    author: '',
+    genre: '',
+    pages: '',
+    publishedDate: '',
   })
-
+  const [search, setSearch] = useState('')
+  const [editing, setEditing] = useState(false)
+  const [currentBook, setCurrentBook] = useState(null)
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks))
-  }, [tasks])
+    fetchBooks()
+  }, [])
 
-  const handleInputChange = e => {
-    const {name, value} = e.target
-    setFormValues({...formValues, [name]: value})
-  }
-
-  const addTask = e => {
-    e.preventDefault()
-    if (editTask) {
-      setTasks(prevTasks =>
-        prevTasks.map(task =>
-          task.id === editTask.id ? {...task, ...formValues} : task,
-        ),
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get(
+        'https://book-mangement-w1ri.onrender.com/books',
       )
-      setEditTask(null)
-    } else {
-      const newTask = {
-        id: Date.now(),
-        ...formValues,
-      }
-      setTasks(prevTasks => [...prevTasks, newTask])
-    }
-    setFormValues({title: '', description: '', dueDate: '', status: 'Pending'})
-  }
-
-  const deleteTask = id => {
-    if (window.confirm('Are you sure you want to delete this task?')) {
-      setTasks(prevTasks => prevTasks.filter(task => task.id !== id))
+      setBooks(response.data)
+    } catch (error) {
+      console.error('Error fetching books', error)
     }
   }
 
-  const editExistingTask = task => {
-    setEditTask(task)
-    setFormValues(task)
+  const handleChange = e => {
+    const {name, value} = e.target
+    setNewBook(prev => ({
+      ...prev,
+      [name]: value,
+    }))
   }
 
-  const filteredTasks =
-    filter === 'All' ? tasks : tasks.filter(task => task.status === filter)
+  const handleSearch = e => {
+    setSearch(e.target.value)
+  }
+
+  const handleAddBook = async e => {
+    e.preventDefault()
+    try {
+      await axios.post(
+        'https://book-mangement-w1ri.onrender.com/books',
+        newBook,
+      )
+      fetchBooks()
+      setNewBook({
+        title: '',
+        author: '',
+        genre: '',
+        pages: '',
+        publishedDate: '',
+      })
+    } catch (error) {
+      console.error('Error adding book', error)
+    }
+  }
+
+  const handleEditBook = async e => {
+    e.preventDefault()
+    try {
+      await axios.put(
+        `https://book-mangement-w1ri.onrender.com/books/${currentBook.bookId}`,
+        newBook,
+      )
+      fetchBooks()
+      setEditing(false)
+      setNewBook({
+        title: '',
+        author: '',
+        genre: '',
+        pages: '',
+        publishedDate: '',
+      })
+    } catch (error) {
+      console.error('Error updating book', error)
+    }
+  }
+
+  const handleDeleteBook = async bookId => {
+    try {
+      await axios.delete(
+        `https://book-mangement-w1ri.onrender.com/books/${bookId}`,
+      )
+      fetchBooks()
+    } catch (error) {
+      console.error('Error deleting book', error)
+    }
+  }
+
+  const handleEditForm = book => {
+    setEditing(true)
+    setCurrentBook(book)
+    setNewBook({
+      title: book.title,
+      author: book.author,
+      genre: book.genre,
+      pages: book.pages,
+      publishedDate: book.publishedDate,
+    })
+  }
+
+  const filteredBooks = books.filter(book =>
+    book.author.toLowerCase().includes(search.toLowerCase()),
+  )
 
   return (
-    <div className="container">
-      <h1 className="title">Task Manager</h1>
-      <form className="task-form" onSubmit={addTask}>
+    <div className="app-container">
+      <h1>Book Management</h1>
+
+      <div className="search-container">
         <input
-          type="text"
-          name="title"
-          placeholder="Task Title"
-          value={formValues.title}
-          onChange={handleInputChange}
-          required
+          type="search"
+          placeholder="Search by Author"
+          value={search}
+          onChange={handleSearch}
         />
-        <textarea
-          name="description"
-          placeholder="Task Description"
-          value={formValues.description}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="date"
-          name="dueDate"
-          value={formValues.dueDate}
-          onChange={handleInputChange}
-          required
-        />
-        <select
-          name="status"
-          value={formValues.status}
-          onChange={handleInputChange}
-        >
-          <option value="Pending">Pending</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Completed">Completed</option>
-        </select>
-        <button type="submit">{editTask ? 'Update Task' : 'Add Task'}</button>
-      </form>
-      <div className="filters">
-        <label htmlFor="filter">Filter by Status:</label>
-        <select
-          id="filter"
-          value={filter}
-          onChange={e => setFilter(e.target.value)}
-        >
-          <option value="All">All</option>
-          <option value="Pending">Pending</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Completed">Completed</option>
-        </select>
       </div>
-      <div className="task-list">
-        {filteredTasks.length > 0 ? (
-          filteredTasks.map(task => (
-            <div className="task-card" key={task.id}>
-              <h3>{task.title}</h3>
-              <p>{task.description}</p>
-              <p>
-                <strong>Due:</strong> {task.dueDate}
-              </p>
-              <p>
-                <strong>Status:</strong> {task.status}
-              </p>
-              <button onClick={() => editExistingTask(task)}>Edit</button>
-              <button onClick={() => deleteTask(task.id)}>Delete</button>
+
+      <div className="form-container">
+        <h2>{editing ? 'Edit Book' : 'Add New Book'}</h2>
+        <form onSubmit={editing ? handleEditBook : handleAddBook}>
+          <input
+            type="text"
+            name="title"
+            placeholder="Title"
+            value={newBook.title}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="author"
+            placeholder="Author"
+            value={newBook.author}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="genre"
+            placeholder="Genre"
+            value={newBook.genre}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="number"
+            name="pages"
+            placeholder="Pages"
+            value={newBook.pages}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="number"
+            name="publishedDate"
+            value={newBook.publishedDate}
+            placeholder="Published Date"
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">{editing ? 'Update' : 'Add'}</button>
+        </form>
+      </div>
+
+      <div className="books-list">
+        {filteredBooks.length > 0 ? (
+          filteredBooks.map(book => (
+            <div className="book-item" key={book.bookId}>
+              <h3>{book.title}</h3>
+              <p>Author: {book.author}</p>
+              <p>Genre: {book.genre}</p>
+              <p>Pages: {book.pages}</p>
+              <p>Published: {book.publishedDate}</p>
+              <div className="actions">
+                <button onClick={() => handleEditForm(book)}>Edit</button>
+                <button onClick={() => handleDeleteBook(book.bookId)}>
+                  Delete
+                </button>
+              </div>
             </div>
           ))
         ) : (
-          <p className="no-tasks">No tasks to display</p>
+          <h2 className="text-center">No books found</h2>
         )}
       </div>
     </div>
@@ -132,5 +197,4 @@ const App = () => {
 }
 
 export default App
-
 
