@@ -1,36 +1,36 @@
-# Task Manager
 
-A simple React-based task manager to manage tasks effectively.
+# Book Management System
+
+A simple **Book Management System** built using **React.js** and **Axios** to handle CRUD operations for managing a collection of books. This app allows users to add, update, delete, and search for books based on the author's name.
 
 ## Features
 
-1. **Add Task**: Create a task with title, description, due date, and status.
-2. **View Tasks**: View tasks in a clean, user-friendly UI.
-3. **Edit Task**: Edit task details with an inline modal.
-4. **Delete Task**: Remove tasks with confirmation.
-5. **Filters (Optional)**: Sort and filter tasks by status or due date.
-6. **Responsive Design**: Fully responsive and accessible across devices.
+- **Add Books**: Users can add a new book to the system by providing details such as title, author, genre, pages, and published date.
+- **Update Books**: Users can update the details of an existing book by clicking the "Edit" button and modifying the book's data.
+- **Delete Books**: Users can delete a book from the system by clicking the "Delete" button next to each book.
+- **Search**: Users can filter books based on the author's name using a search bar.
+- **Responsive Design**: The app is fully responsive and works seamlessly on mobile, tablet, and desktop devices.
 
-## Tech Stack
+## Technologies Used
 
-- React.js
-- CSS (with responsive design principles)
-- Local Storage for data persistence
+- **React.js**: Frontend framework to build the user interface.
+- **Axios**: To perform HTTP requests (GET, POST, PUT, DELETE) for CRUD operations.
+- **CSS**: Custom CSS for styling and ensuring the app is responsive across devices.
+
+## Prerequisites
+
+To run this project locally, you need to have the following installed on your system:
+
+- **Node.js** (v14 or later)
+- **npm** or **yarn** (Node package manager)
 
 ## Installation
 
-1. Clone the repository:
+Follow these steps to get the project running on your local machine:
+
+1. **Clone the repository**:
+
    ```bash
-   git clone [https://github.com/Vinaykumar5890/tak]
+   git clone https://github.com/your-username/book-management-system.git
+   cd book-management-system
 
-## Website Url 
-
- -WEBSITE URL 
-  ```bash
-  https://tak.ccbp.tech/
-- 
-> ### _Things to Keep in Mind_
->
-> - All components you implement should go in the `src` directory.
-> - Don't change the component folder names as those are the files being imported into the tests.
-> - **Do not remove the pre-filled code**
